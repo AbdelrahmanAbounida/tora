@@ -1,0 +1,38 @@
+********************************************
+1- New App
+********************************************
+>> nest new backend 
+>> npm run start:dev
+
+********************************************
+2- Configurations
+********************************************
+>> Create config folder 
+>> create app.config and database.config, and add files for other services as u go 
+>> npm i --save @nestjs/config
+
+------------------------
+>> in the main app.module 
+
+imports:[ConfigModule.forRoot({
+      isGlobal: true, // to prevent importing it in any module we need it 
+      load: [databaseConfig, appConfig],
+      envFilePath: '.env',
+      ignoreEnvFile: false, // if u wanna ignore it 
+      cache: true, // to speed up the process 
+    }),
+    ...
+]
+------------------------
+# custom configuration , with Custom validate (class-transformer) and namespaces ( registerAs )
+
+
+1- create dynamic validation function 
+common/utils/validate-config.ts 
+
+
+------------------------
+# to use port in main.ts 
+
+const configService = app.get(ConfigService)
+configService.get('app.port')
