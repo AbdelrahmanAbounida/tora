@@ -73,5 +73,14 @@ export class AbstractEntity<T> {
 >> npm install --save @nestjs/typeorm typeorm mysql2
 
 ********************************************
-6- 
+6- Route validation 
 ********************************************
+>> U can add it locally per route like in Body(ValidationPipe)
+or 
+>> On Controller leve:  @UsePipes(ValidationPipe)
+or 
+>> On global level: app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist:true
+  })
+)
