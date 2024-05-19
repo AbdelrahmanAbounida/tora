@@ -26,13 +26,26 @@ imports:[ConfigModule.forRoot({
 ------------------------
 # custom configuration , with Custom validate (class-transformer) and namespaces ( registerAs )
 
-
 1- create dynamic validation function 
 common/utils/validate-config.ts 
 
+2- create app,database configuration
 
 ------------------------
 # to use port in main.ts 
 
 const configService = app.get(ConfigService)
 configService.get('app.port')
+
+
+********************************************
+3- base controller and services
+********************************************
+>> nest g resource auth 
+>> nest g resource modules/profiles 
+>> nest g resource modules/posts
+
+
+********************************************
+4- convert ERD to database entites 
+********************************************
