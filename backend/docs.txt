@@ -49,3 +49,29 @@ configService.get('app.port')
 ********************************************
 4- convert ERD to database entites 
 ********************************************
+
+
+********************************************
+5- database
+********************************************
+>> docker.compose 
+>> nest g module database
+>> create abstract.entity.ts
+------------------
+import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class AbstractEntity<T> {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  constructor(entity: Partial<T>) {
+    Object.assign(this, entity); // is kinda like updating the object with external info, if it already exist
+  }
+}
+------------------
+>> npm install --save @nestjs/typeorm typeorm mysql2
+
+********************************************
+6- 
+********************************************
