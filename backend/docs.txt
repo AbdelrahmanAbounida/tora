@@ -84,3 +84,18 @@ or
     whitelist:true
   })
 )
+
+********************************************
+7- Serializing response (role based)
+********************************************
+
+# 1- create custom decorator to add 'dto' to metadata
+to access it from interceptor and add more/less info to 
+response accordingly 
+
+# 2- in interceptor handle that seriliaztion process
+or use general one provided by nest ClassSerializerInterceptor
+similar to global ValidationPipe , 
+
+all u have to do it just add custom settings in DTOs/entites 
+like @Expose, @Exclude , @Transform 

@@ -1,6 +1,7 @@
 import { AbstractEnttiy } from 'src/database/abstract.entity';
 import { Column, Entity } from 'typeorm';
 import { USER_ROLE_ENUM } from '../constants/role.enum';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
 export class User extends AbstractEnttiy<User> {
@@ -14,6 +15,7 @@ export class User extends AbstractEnttiy<User> {
   email: string;
 
   @Column()
+  @Exclude()
   hashedPassword: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }) // ,default:new Date()
@@ -23,6 +25,9 @@ export class User extends AbstractEnttiy<User> {
   updated_at: Date;
 
   @Column({ type: 'timestamp', nullable: true })
+  @Expose({
+    name: 'Verification date',
+  })
   emailVerified: Date;
 
   @Column({ type: 'enum', enum: USER_ROLE_ENUM })

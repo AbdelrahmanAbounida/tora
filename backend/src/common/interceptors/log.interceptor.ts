@@ -13,7 +13,6 @@ export class LoggerInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> {
     console.log('Before: Hi before implementation from logger interceptor');
-    console.log(context);
     return next
       .handle()
       .pipe(

@@ -6,8 +6,12 @@ import {
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 
+export interface Response<T> {
+  data: T;
+}
+
 @Injectable()
-export class ResponseInterceptor implements NestInterceptor {
+export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   /**
    * an interceptor to decorate the response content into json like object
    * @param context Returns the *type* of the controller class which the current handler belongs to.
@@ -15,12 +19,8 @@ export class ResponseInterceptor implements NestInterceptor {
    */
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
-    return next.handle().pipe(
-      map((data) => {
-        data;
-      }),
-    );
+    next: CallHandler,
+  ): Observable<Response<T>> {
+    return next.handle().pipe(map((data) => ({ data })));
   }
 }
