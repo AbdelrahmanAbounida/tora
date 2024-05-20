@@ -17,6 +17,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 
 @Controller('users')
 // @UsePipes(ValidationPipe)
@@ -34,6 +35,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  // @Serialize(CreateUserDto) // different method to serialize the response
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.findUserById(id);

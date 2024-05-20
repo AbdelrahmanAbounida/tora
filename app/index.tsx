@@ -3,18 +3,17 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom-button";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
+import Logo from "@/components/logo";
 
 export default function Onboard() {
+  const router = useRouter();
   return (
     <SafeAreaView className="bg-dark h-full">
       <ScrollView className="h-full">
-        <View className=" h-full flex items-center justify-center p-3 mt-5">
+        <View className=" h-full flex items-center justify-center p-3 mt-3 mx-1">
           {/** logo */}
-          <Image
-            resizeMode="contain"
-            source={require("../assets/images/logo.png")}
-            alt="logo"
-          />
+          <Logo />
 
           {/** image  */}
           <Image
@@ -25,17 +24,24 @@ export default function Onboard() {
           />
 
           {/** title */}
-          <View className="flex flex-row items-center mt-4 text-center justify-center  ">
-            <Text className="font-semibold text-[30px] text-[#fff] text-center">
+          <View className=" mt-4 w-full">
+            <Text className="font-pbold text-[29px] text-[#fff] text-center flex-1 ">
               Discover Endless Possibilities with {""}
               <Text className="text-primary font-extrabold text-[30px]">
                 Tora
               </Text>
             </Text>
+
+            <Image
+              className="absolute bottom-0 right-0 w-[65px] h-[28px]"
+              resizeMode="contain"
+              source={require("../assets/images/path.png")}
+              alt="logo"
+            />
           </View>
 
           {/** subtitle */}
-          <Text className="text-secondary  mt-1 p-3 text-[14px]">
+          <Text className="text-secondary font-pregular text-center text-[14px]">
             Where Creativity Meets Innovation: Embark on a Journey of Limitless
             Exploration with Tora
           </Text>
@@ -44,7 +50,7 @@ export default function Onboard() {
           <CustomButton
             style={{ marginTop: 20 }}
             title="Continue with Email"
-            onClick={() => console.log("clicked")}
+            onClick={() => router.replace("/(auth)/login")}
           />
         </View>
       </ScrollView>

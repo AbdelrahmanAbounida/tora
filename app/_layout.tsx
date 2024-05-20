@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,13 +30,11 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (error) throw error;
-  }, [error]);
 
-  useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [error, loaded]);
 
   if (!loaded) {
     return null;
@@ -53,7 +52,9 @@ function RootLayoutNav() {
         {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
+      <StatusBar backgroundColor="#161622" style="light" />
     </ThemeProvider>
   );
 }

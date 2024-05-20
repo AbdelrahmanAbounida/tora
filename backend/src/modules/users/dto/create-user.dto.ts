@@ -1,6 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { USER_ROLE_ENUM } from '../constants/role.enum';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 export class CreateUserDto {
   @IsEmail()
