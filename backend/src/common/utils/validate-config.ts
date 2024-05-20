@@ -9,7 +9,7 @@ export function validateConfig<T extends object>(
 
   const validatedConfig = plainToInstance(
     EnvironmentVariables, // class validator for env variables
-    config, // exact loaded env variables from .env
+    config, // exact loaded env variables from .env aka process.env
     {
       enableImplicitConversion: true,
     },
