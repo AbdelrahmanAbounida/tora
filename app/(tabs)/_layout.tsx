@@ -1,13 +1,39 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { useColorScheme } from "@/components/useColorScheme";
+import { Image, Text, View } from "react-native";
+
+const images = {
+  create: require("../../assets/icons/create.png"),
+  home: require("../../assets/icons/home.png"),
+  profile: require("../../assets/icons/profile.png"),
+  saved: require("../../assets/icons/saved.png"),
+};
 
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  // name: React.ComponentProps<typeof FontAwesome>["name"];
+  image: keyof typeof images;
   color: string;
+  title: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  // return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return (
+    <View className="flex items-center justify-center gap-1">
+      <Image
+        source={images[props.image]}
+        alt="image"
+        resizeMode="contain"
+        tintColor={props.color}
+      />
+
+      <Text
+        className="text-[12px] font-psemibold"
+        style={{ color: props.color }}
+      >
+        {props.title}
+      </Text>
+    </View>
+  );
 }
 
 export default function TabLayout() {
@@ -16,17 +42,28 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "yellow",
-        tabBarShowLabel: false,
-        // headerShown: false, //true,
+        tabBarActiveTintColor: "#FFA001",
+        tabBarInactiveTintColor: "#CDCDE0",
+        tabBarStyle: {
+          backgroundColor: "#161622",
+          borderTopWidth: 1,
+          borderTopColor: "#232533",
+          height: 84,
+        },
+        // tabBarShowLabel: false,
+        tabBarShowLabel: false, //true,
       }}
     >
+      {/* <Image source={require("")} */}
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerShadowVisible: false,
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon title="Home" image="home" color={color} />
+          ),
+          // headerShadowVisible: false,
           // headerRight: () => (
           //   <Link href="/modal" asChild>
           //     <Pressable>
@@ -44,10 +81,34 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="create"
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Create",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon title="Create" image="create" color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon title="Profile" image="profile" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="saved"
+        options={{
+          title: "Saved",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon title="Saved" image="saved" color={color} />
+          ),
         }}
       />
     </Tabs>

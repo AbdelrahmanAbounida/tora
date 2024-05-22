@@ -16,7 +16,8 @@ export class User extends AbstractEnttiy<User> {
 
   @Column()
   @Exclude()
-  hashedPassword: string;
+  @Expose({ name: 'hashedpassword' })
+  password: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }) // ,default:new Date()
   created_at: Date;

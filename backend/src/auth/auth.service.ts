@@ -1,26 +1,89 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import {
+  BadGatewayException,
+  BadRequestException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { SigninAuthDTO, SignupAuthDTO } from './dto/create-auth.dto';
+import { UsersService } from 'src/modules/users/users.service';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
+import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/modules/users/entities/user.entity';
+import { isInstance } from 'class-validator';
+
+const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
+
+  async signup(signupAuthDTO: SignupAuthDTO) {
+    // 1- check if user already exists
+
+    // 2- hashing password
+    /**
+     * 1- Generate salt (extra word/hash gonna be added to the hash to increase security)
+     * 2- hash the salt and the password together
+     * 3- join the salt and the hashed password+salt >> So that in the future we gonna know the salt
+     * to use it in unhash
+     */
+    const salt = randomBytes(16).toString('hex');
+    const password_salt_hash = (await scrypt(
+      signupAuthDTO.password,
+      salt,
+      32,
+    )) as Buffer;
+    const joined_result = salt + '.' + password_salt_hash.toString('hex');
+
+    // 3- create new user with the hashed password
+    const newUser: User | HttpException = await this.userService.create({
+      ...signupAuthDTO,
+      password: joined_result,
+    });
+
+    if (isInstance(newUser, HttpException)) {
+      return newUser;
+    } else {
+      // 4- return payload
+      // return newUser;
+      // return this.signIn({
+      //   email: (newUser as User).email,
+      //   password: (newUser as User).password,
+      // });
+      return newUser;
+    }
   }
 
-  findAll() {
-    return { message: `You will be logged in now` };
-  }
+  async signIn(signinAuthDTO: SigninAuthDTO) {
+    // 1- check if user exists
+    const user = await this.userService.findUserByEmail(signinAuthDTO.email);
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    //2- hash entered password
+    const [salt, storedHash] = user.password.split('.');
+    const EnteredHashedPassword = (await scrypt(
+      signinAuthDTO.password,
+      salt,
+      32,
+    )) as Buffer;
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    // 3- compare passwords
+    const isPasswordCorrect =
+      storedHash === EnteredHashedPassword.toString('hex');
+
+    if (isPasswordCorrect) {
+      const payload = { sub: user.id, email: user.email, role: user.role };
+      return { access_token: this.jwtService.sign(payload) };
+    }
+    throw new UnauthorizedException('Password incorrect');
   }
 }

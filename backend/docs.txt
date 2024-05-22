@@ -99,3 +99,110 @@ similar to global ValidationPipe ,
 
 all u have to do it just add custom settings in DTOs/entites 
 like @Expose, @Exclude , @Transform 
+
+
+********************************************
+8- Auth
+********************************************
+
+For Authentication:
+
+- first to inject service 
+
+(1) add userService to exports 
+(2) add userModule in auth module in imports 
+(3) start impolemting signup in auth service 
+
+# For hashing and encryption , we can use either crypto or bcrypt 
+
+# 1- Authentication Service
+npm i @nestjs/jwt
+handle login, signup 
+
+# 2- Passport Streategy
+this is used to handle the validation method with by regular email/passowrd, 
+google, ... 
+and then it can handle the authentication using jwt, session, ... 
+
+
+
+>> add the strategy to auth module providers and PassportModule to imports 
+>>  AuthModule should import the JwtModule to handle JSON Web Token (JWT) generation and verification.
+
+
+# Guards 
+Guards have a single responsibility. They determine whether a given request will be handled 
+by the route handler or not, depending on certain conditions (like permissions, roles, ACLs, etc.)
+
+
+
+-------------------
+Steps
+-------------------
+ npm install --save @nestjs/passport passport  passport-jwt
+ npm install --save-dev @types/passport-jwt
+
+ 
+1- create auth configuration 
+2- add jwt module to auth module with configuration injected 
+3- handle login/register in auth service 
+4- passport-jwt vs passport-local 
+local used for session auth , and jwt for jwt-auth 
+
+lets focus on jwt one 
+strategy is mainly used for jwt verification 
+
+JWT Authentication Process
+----------------------
+1- User Registration:
+The user provides their details (e.g., email, password) to the registration endpoint.
+The server hashes the password and stores the user details in the database.
+
+2- User Login:
+The user submits their credentials (email and password) to the login endpoint.
+The server verifies the credentials against the stored data.
+If valid, the server generates a JWT containing user information (typically user ID).
+
+3- Issuing the JWT:
+The JWT is sent back to the user.
+The user stores the JWT (usually in local storage or cookies).
+
+4- Authenticated Requests:
+For each subsequent request, the user includes the JWT in the Authorization header (Authorization: Bearer <token>).
+The server verifies the JWT on each request.
+If the JWT is valid, the server processes the request and provides the necessary response.
+
+* (passport-jwt) >> a strategy used for validting jwt in header (we can customize it)
+* (Guard):
+- The guard (or middleware) uses the strategy to protect routes.
+- The guard checks the incoming requests and only allows access if the token is valid.
+
+
+1- create auth module, serive with login/register functoinality
+2- include required services, module (UserModule, JWTModule,PassportModule, YourCustomLocalStrategy )
+2-* for JWTModule >> u gonna need to add authconfig and inject it to use its variables with registerAsync
+3- create strategies in auth/strategies
+- jwt.strategy.ts
+
+(before creating guard u can manually come over a route and use it 
+
+@UseGuards(AuthGuard('myjwt'))) // AuthGuard from nestjs/passport
+4- create guards auth/guards 
+- jwt.guard.ts, 
+- social (google.guard.ts, apple.guard.ts)
+
+
+* Summary
+- Strategy: Handles the extraction and verification of JWTs.
+- Guard: Applies the strategy to protect routes by ensuring only authenticated requests are processed.
+
+
+# Enable authentication globally
+providers: [
+  {
+    provide: APP_GUARD,
+    useClass: JwtAuthGuard,
+  },
+],
+
+# Public guard 

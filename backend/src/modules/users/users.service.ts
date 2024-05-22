@@ -19,7 +19,7 @@ export class UsersService {
     // check if user exists
     const isUserExist = await this.findUserByEmail(createUserDto.email);
 
-    if (isUserExist.length > 0) {
+    if (isUserExist) {
       return new ConflictException('User With this email already exist');
     }
     const user = new User({ ...createUserDto });
@@ -38,7 +38,7 @@ export class UsersService {
     return user;
   }
   async findUserByEmail(email: string) {
-    const user = await this.userRepository.findBy({ email });
+    const user = await this.userRepository.findOneBy({ email });
     return user;
   }
 

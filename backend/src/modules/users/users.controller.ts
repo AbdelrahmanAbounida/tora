@@ -6,19 +6,17 @@ import {
   Patch,
   Param,
   Delete,
-  ValidationPipe,
-  UsePipes,
   ParseIntPipe,
-  HttpException,
   NotFoundException,
-  UseInterceptors,
-  ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Serialize } from 'src/common/interceptors/serialize.interceptor';
+import { AuthGuard } from '@nestjs/passport';
+import { JWTAuthGuard } from 'src/auth/guards/jwt.guard';
 
+// @UseGuards(AuthGuard('myjwt'))
 @Controller('users')
 // @UsePipes(ValidationPipe)
 export class UsersController {
@@ -30,6 +28,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JWTAuthGuard)
   @Get('all')
   findAll() {
     return this.usersService.findAll();

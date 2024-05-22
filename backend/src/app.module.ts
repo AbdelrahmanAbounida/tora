@@ -6,6 +6,9 @@ import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './database/database.module';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
+import authConfig from './config/auth.config';
+import { APP_GUARD } from '@nestjs/core';
+import { JWTAuthGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -14,7 +17,7 @@ import appConfig from './config/app.config';
       isGlobal: true,
       cache: true,
       envFilePath: '.env',
-      load: [databaseConfig, appConfig],
+      load: [databaseConfig, appConfig, authConfig],
     }),
     // 2- Database
     DatabaseModule,
@@ -23,6 +26,11 @@ import appConfig from './config/app.config';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JWTAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

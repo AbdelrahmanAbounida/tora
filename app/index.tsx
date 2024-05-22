@@ -50,7 +50,7 @@ export default function Onboard() {
           <CustomButton
             style={{ marginTop: 20 }}
             title="Continue with Email"
-            onClick={() => router.replace("/(auth)/login")}
+            onClick={() => router.replace("/(tabs)/home")}
           />
         </View>
       </ScrollView>
