@@ -4,9 +4,13 @@ import { ConfigService } from '@nestjs/config';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { LoggerInterceptor } from './common/interceptors/log.interceptor';
 import { Reflector } from '@nestjs/core';
+import { CustomLogger } from './common/logging/app-logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+  app.enableCors();
   const configService = app.get(ConfigService);
 
   // validation pipe
@@ -19,6 +23,7 @@ async function bootstrap() {
     new LoggerInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
+  app.useLogger(new CustomLogger());
   await app.listen(configService.getOrThrow('app.port'));
 }
 bootstrap();

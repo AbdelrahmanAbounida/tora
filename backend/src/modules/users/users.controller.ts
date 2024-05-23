@@ -15,12 +15,21 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { JWTAuthGuard } from 'src/auth/guards/jwt.guard';
+import { CustomLogger } from 'src/common/logging/app-logger';
+import { Public } from 'src/auth/guards/public.guard';
+import { USER_ROLE_ENUM } from './constants/role.enum';
+import { Auth } from 'src/auth/decorator/auth-decorator';
 
 // @UseGuards(AuthGuard('myjwt'))
 @Controller('users')
+@Public()
+// @Auth(USER_ROLE_ENUM.USER, true)
 // @UsePipes(ValidationPipe)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private logger: CustomLogger,
+  ) {}
 
   @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
@@ -30,8 +39,10 @@ export class UsersController {
 
   @UseGuards(JWTAuthGuard)
   @Get('all')
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    const users = await this.usersService.findAll();
+    this.logger.success(users[0].email);
+    return users;
   }
 
   // @Serialize(CreateUserDto) // different method to serialize the response
