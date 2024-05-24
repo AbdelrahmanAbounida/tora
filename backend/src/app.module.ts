@@ -9,6 +9,9 @@ import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 import { APP_GUARD } from '@nestjs/core';
 import { JWTAuthGuard } from './auth/guards/jwt.guard';
+import { AwsModule } from './common/aws/aws.module';
+import { EmailModule } from './modules/email/email.module';
+import awsConfig from './config/aws.config';
 
 @Module({
   imports: [
@@ -17,13 +20,15 @@ import { JWTAuthGuard } from './auth/guards/jwt.guard';
       isGlobal: true,
       cache: true,
       envFilePath: '.env',
-      load: [databaseConfig, appConfig, authConfig],
+      load: [databaseConfig, appConfig, authConfig, awsConfig],
     }),
     // 2- Database
     DatabaseModule,
     AuthModule,
     PostsModule,
     UsersModule,
+    AwsModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [
