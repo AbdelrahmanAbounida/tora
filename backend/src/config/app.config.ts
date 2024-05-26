@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsInt,
   IsOptional,
+  IsString,
   Max,
   Min,
 } from 'class-validator';
@@ -20,6 +21,7 @@ interface AppConfigProps {
   nodeEnv: string;
   port: number;
   maintenance: boolean;
+  api_key: string;
 }
 
 class AppConfigValidator {
@@ -36,6 +38,10 @@ class AppConfigValidator {
   @IsBoolean()
   @IsOptional()
   maintenance: boolean;
+
+  @IsOptional()
+  @IsString()
+  api_key: string;
 }
 
 // register a namespace for these variables. ex: 'app.port'
@@ -50,5 +56,6 @@ export default registerAs<AppConfigProps>('app', () => {
         ? parseInt(process.env.PORT, 10)
         : 3000,
     maintenance: process.env.MAINTENACE === 'true',
+    api_key: process.env.API_KEY,
   };
 });

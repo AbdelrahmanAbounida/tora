@@ -206,3 +206,12 @@ providers: [
 ],
 
 # Public guard 
+
+
+
+********************************************
+API Keys
+********************************************
+1- add api_key to configuration 
+2- create apikey guard 
+3- 

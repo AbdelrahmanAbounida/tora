@@ -11,6 +11,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JWTAuthGuard } from './auth/guards/jwt.guard';
 import { AwsModule } from './common/aws/aws.module';
 import { EmailModule } from './modules/email/email.module';
+import { ApiModule } from './modules/api/api.module';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -19,7 +20,7 @@ import awsConfig from './config/aws.config';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      envFilePath: '.env',
+      envFilePath: '.env', // ::TODO:: Load different one for testing
       load: [databaseConfig, appConfig, authConfig, awsConfig],
     }),
     // 2- Database
@@ -29,6 +30,7 @@ import awsConfig from './config/aws.config';
     UsersModule,
     AwsModule,
     EmailModule,
+    ApiModule,
   ],
   controllers: [],
   providers: [

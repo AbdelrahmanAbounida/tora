@@ -23,7 +23,9 @@ async function bootstrap() {
     new LoggerInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  app.useLogger(new CustomLogger());
+  // app.useGlobalGuards // instead of APP_GUARD in main module
+
+  // app.useLogger(new CustomLogger());
   await app.listen(configService.getOrThrow('app.port'));
 }
 bootstrap();

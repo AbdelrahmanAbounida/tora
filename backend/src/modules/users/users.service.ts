@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -16,16 +12,27 @@ export class UsersService {
     private readonly entiyManager: EntityManager,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    // check if user exists
-    const isUserExist = await this.findUserByEmail(createUserDto.email);
+    try {
+      // check if user exists
+      const isUserExist = await this.findUserByEmail(createUserDto.email);
 
-    if (isUserExist) {
-      return new ConflictException('User With this email already exist');
+      if (isUserExist) {
+        return new ConflictException('User With this email already exist');
+      }
+      const user = this.userRepository.create(createUserDto);
+      // const user = new User({ ...createUserDto }); // different way
+
+      // rollback transaction
+      await this.entiyManager.transaction(
+        async (transactionalEntityManager) => {
+          await transactionalEntityManager.save(user);
+        },
+      );
+      return user;
+    } catch (error) {
+      console.log({ error });
+      return;
     }
-    const user = new User({ ...createUserDto });
-    // const user = this.userRepository.create(createUserDto); // different way
-    await this.entiyManager.save(user);
-    return user;
   }
 
   async findAll() {

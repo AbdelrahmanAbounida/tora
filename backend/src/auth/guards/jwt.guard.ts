@@ -27,11 +27,18 @@ export class JWTAuthGuard extends AuthGuard(['myjwt']) {
     if (isPublic) return true;
 
     // handle authorization
-    const reqRole = this.reflector.get(Roles, context.getHandler());
+
+    // in case user might override the decorator of controller to specific route
+
+    // const reqRole = this.reflector.getAllAndOverride(Roles, [context.getHandler(), context.getClass()]);
+
+    // OR
+    // const reqRole = this.reflector.getAllAndMerge<string[]>('roles', context.getHandler());
+
+    // this gonna read it from the handler/route >> and if u didn't define it it will read from the controller
+    const reqRole = this.reflector.get(Roles, context.getHandler()); //
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-
-    console.log({ user });
 
     if (
       reqRole === USER_ROLE_ENUM.ADMIN &&
