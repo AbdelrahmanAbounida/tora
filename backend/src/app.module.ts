@@ -12,6 +12,7 @@ import { JWTAuthGuard } from './auth/guards/jwt.guard';
 import { AwsModule } from './common/aws/aws.module';
 import { EmailModule } from './modules/email/email.module';
 import { ApiModule } from './modules/api/api.module';
+import { GraphqlModule } from './modules/graphql/graphql.module';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -31,6 +32,7 @@ import awsConfig from './config/aws.config';
     AwsModule,
     EmailModule,
     ApiModule,
+    GraphqlModule,
   ],
   controllers: [],
   providers: [

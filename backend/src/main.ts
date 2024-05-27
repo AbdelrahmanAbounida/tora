@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { LoggerInterceptor } from './common/interceptors/log.interceptor';
 import { Reflector } from '@nestjs/core';
-import { CustomLogger } from './common/logging/app-logger';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
