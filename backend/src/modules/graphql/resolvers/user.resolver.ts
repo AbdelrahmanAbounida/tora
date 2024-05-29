@@ -4,18 +4,16 @@ import { UserQLService } from '../services/user.service';
 import { CreateQLUser } from '../dto/create-userql.input';
 import { UpdateQLUser } from '../dto/update-user.input';
 
-
-
 @Resolver(() => QLUser)
 export class UserQLResolver {
   constructor(private readonly userQLService: UserQLService) {}
 
-  @Mutation(() => QLUser, {name: 'createqluser'})
+  @Mutation(() => QLUser, { name: 'createqluser' })
   createUserQL(@Args('createQlUser') createQlUser: CreateQLUser) {
     return this.userQLService.create(createQlUser);
   }
 
-  @Query(returns => [QLUser], { name: 'findallqlusers' })
+  @Query((returns) => [QLUser], { name: 'findallqlusers' })
   findAllUserQL() {
     return this.userQLService.findAll();
   }
@@ -25,12 +23,15 @@ export class UserQLResolver {
     return this.userQLService.findOne(id);
   }
 
-  @Mutation(() => QLUser)
-  udateUserQL(@Args('updateQlUser') updateQlUser: UpdateQLUser) {
-    return this.userQLService.update(updateQlUser.id, updateQlUser);
+  @Mutation(() => QLUser, { name: 'updateQlUser' })
+  udateUserQL(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('updateQlUser') updateQlUser: UpdateQLUser,
+  ) {
+    return this.userQLService.update(id, updateQlUser);
   }
 
-  @Mutation(() => QLUser, {name: 'deleteqluser'})
+  @Mutation(() => QLUser, { name: 'deleteqluser' })
   removeUserQl(@Args('id', { type: () => Int }) id: number) {
     return this.userQLService.remove(id);
   }

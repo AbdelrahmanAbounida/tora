@@ -1,54 +1,64 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import { AbstractEnttiy } from "src/database/abstract.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
-import { QLPost } from "./post.entity";
-import { UserRole } from "../constants/user-role.enum";
-import { Exclude } from "class-transformer";
-
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { AbstractEnttiy } from 'src/database/abstract.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { QLPost } from './post.entity';
+import { UserRole } from '../constants/user-role.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @ObjectType()
-export class QLUser extends AbstractEnttiy<QLUser>{
+export class QLUser extends AbstractEnttiy<QLUser> {
+  @PrimaryGeneratedColumn()
+  @Field(() => Int)
+  id: number;
 
-    @Field({nullable: true})
-    @Column({type: 'nvarchar',nullable:true})
-    name: string 
+  @Field({ nullable: true })
+  @Column({ type: 'nvarchar', nullable: true })
+  name: string;
 
-    @Column({type: 'mediumtext',nullable:true})
-    @Field({nullable: true})
-    image:string
+  @Column({ type: 'mediumtext', nullable: true })
+  @Field({ nullable: true })
+  image: string;
 
-    @Column({type: 'nvarchar'}) // ,unique:true,
-    @Field({nullable: false})
+  @Column({ type: 'nvarchar' }) // ,unique:true,
+  @Field({ nullable: false })
+  email: string;
 
-    email: string
+  @Column({ type: 'mediumtext' })
+  @Field({ nullable: false })
+  @Exclude()
+  password: string;
 
-    @Column({type: 'mediumtext'})
-    @Field({nullable: false})
-    @Exclude()
-    password : string 
-    
-    @Column({ type: 'timestamp'}) // , default: () => 'CURRENT_TIMESTAMP' 
-    @Field({nullable: false})
-    emailVerified: Date
+  @Column({ type: 'timestamp', nullable: true }) // , default: () => 'CURRENT_TIMESTAMP'
+  @Field({ nullable: true })
+  emailVerified: Date;
 
-    @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    @Field({nullable: false})
-    createdAt : Date
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Field({ nullable: false })
+  createdAt: Date;
 
-    @Column({ type: 'timestamp'}) // , default: () => 'CURRENT_TIMESTAMP' 
-    @Field({nullable: false})
-    updatedAt : Date
+  @Column({ type: 'datetime', onUpdate: 'CURRENT_TIMESTAMP', nullable: true }) // , default: () => 'CURRENT_TIMESTAMP'
+  @Field({ nullable: true })
+  updatedAt: Date;
 
-    @Column({type: 'enum',enum:UserRole, default:UserRole.USER})
-    @Field(type => UserRole ,{nullable: false})
-    role : UserRole
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  @Field((type) => UserRole, { nullable: false })
+  role: UserRole;
 
-    // relations 
-    @OneToMany(type=>QLPost, post =>post.owner)
-    posts: QLPost[]
+  // relations
+  @OneToMany((type) => QLPost, (post) => post.owner)
+  @Field(() => [QLPost], { name: 'posts', defaultValue: [] })
+  posts: QLPost[];
 
-    @ManyToMany(type=>QLPost)
-    @JoinTable() // no need to create external table 
-    savedPosts: QLPost[]
+  @ManyToMany((type) => QLPost)
+  @JoinTable() // no need to create external table
+  @Field(() => [QLPost], { name: 'savedPosts', defaultValue: [] })
+  savedPosts: QLPost[];
 }

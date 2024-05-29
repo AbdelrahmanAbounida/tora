@@ -1,15 +1,16 @@
-import { Field, InputType, Int } from "@nestjs/graphql";
-import { CreateQLUser } from "./create-userql.input";
-import { PartialType } from "@nestjs/mapped-types";
-import { UserRole } from "../constants/user-role.enum";
-
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { CreateQLUser } from './create-userql.input';
+import { PartialType } from '@nestjs/mapped-types';
+import { UserRole } from '../constants/user-role.enum';
 
 @InputType()
-export  class UpdateQLUser extends PartialType(CreateQLUser){
+export class UpdateQLUser extends PartialType(CreateQLUser) {
+  @Field((type) => UserRole, { nullable: true, defaultValue: UserRole.USER })
+  role?: UserRole;
 
-    @Field(type=>Int)
-     id: number 
+  @Field({ nullable: true })
+  name?: string;
 
-     @Field(type => UserRole, {nullable:true,defaultValue: UserRole.USER})
-     role?: UserRole
+  @Field({ nullable: true })
+  image?: string;
 }

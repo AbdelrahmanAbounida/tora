@@ -3,21 +3,27 @@
 # ------------------------------------------------------
 
 type QLPost {
+  id: Int!
   title: String!
-  image_url: String!
-  video_url: String!
+  image_url: String
+  video_url: String
   prompt: String!
+  owner: QLUser!
+  users: [QLUser!]!
 }
 
 type QLUser {
+  id: Int!
   name: String
   image: String
   email: String!
   password: String!
-  emailVerified: DateTime!
+  emailVerified: DateTime
   createdAt: DateTime!
-  updatedAt: DateTime!
+  updatedAt: DateTime
   role: UserRole!
+  posts: [QLPost!]!
+  savedPosts: [QLPost!]!
 }
 
 """
@@ -39,9 +45,9 @@ type Query {
 
 type Mutation {
   createqluser(createQlUser: CreateQLUser!): QLUser!
-  udateUserQL(updateQlUser: UpdateQLUser!): QLUser!
+  updateQlUser(id: Int!, updateQlUser: UpdateQLUser!): QLUser!
   deleteqluser(id: Int!): QLUser!
-  createqlpost(createQLPost: CreateQLPost!): QLPost!
+  createqlpost(userId: Int!, createQLPost: CreateQLPost!): QLPost!
   updateqlpost(id: Int!): QLPost!
   deleteqlpost(id: Int!): QLPost!
 }
@@ -55,8 +61,9 @@ input CreateQLUser {
 }
 
 input UpdateQLUser {
-  id: Int!
   role: UserRole = USER
+  name: String
+  image: String
 }
 
 input CreateQLPost {
