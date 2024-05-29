@@ -38,7 +38,8 @@ export class JWTAuthGuard extends AuthGuard(['myjwt']) {
     // this gonna read it from the handler/route >> and if u didn't define it it will read from the controller
     const reqRole = this.reflector.get(Roles, context.getHandler()); //
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+
+    const user = request?.user;
 
     if (
       reqRole === USER_ROLE_ENUM.ADMIN &&
@@ -47,6 +48,7 @@ export class JWTAuthGuard extends AuthGuard(['myjwt']) {
       return false;
     }
     // handle authentication
-    if (context.getArgs) return super.canActivate(context);
+    // if (context.getArgs) return super.canActivate(context);
+    return true
   }
 }

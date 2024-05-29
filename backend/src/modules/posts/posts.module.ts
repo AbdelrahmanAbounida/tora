@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Post } from './entities/post.entity';
 
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([Post]),
+    // ::TODO:: add auth module to use its service
+  ],
   controllers: [PostsController],
   providers: [PostsService],
 })

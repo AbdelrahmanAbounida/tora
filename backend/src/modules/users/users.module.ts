@@ -8,7 +8,6 @@ import { CustomLogger } from 'src/common/logging/app-logger';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    // ::TODO:: add auth module to use its service
   ],
   controllers: [UsersController],
   providers: [UsersService, CustomLogger],

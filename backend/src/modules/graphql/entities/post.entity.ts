@@ -1,11 +1,11 @@
 import {Field, ObjectType} from "@nestjs/graphql"
 import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 import { AbstractEnttiy } from "src/database/abstract.entity";
-import { User } from "src/modules/users/entities/user.entity";
+import { QLUser } from "./user.entity";
 
 @ObjectType()
 @Entity()
-export class Post extends AbstractEnttiy<Post> {
+export class QLPost extends AbstractEnttiy<QLPost> {
 
     // @Field({nullable:false})
     // @Column()
@@ -28,9 +28,9 @@ export class Post extends AbstractEnttiy<Post> {
     prompt: string 
 
     // relations 
-    @ManyToOne(()=>User, user =>user.posts)
-    owner:User 
+    @ManyToOne(type=>QLUser, user =>user.posts)
+    owner:QLUser 
 
-    @ManyToMany(()=>User)
-    users: User[]
+    @ManyToMany(type=>QLUser)
+    users: QLUser[]
 }

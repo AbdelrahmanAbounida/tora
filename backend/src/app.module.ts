@@ -32,7 +32,7 @@ import awsConfig from './config/aws.config';
     AwsModule,
     EmailModule,
     ApiModule,
-    GraphqlModule,
+    GraphqlModule
   ],
   controllers: [],
   providers: [

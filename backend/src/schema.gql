@@ -1,0 +1,68 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type QLPost {
+  title: String!
+  image_url: String!
+  video_url: String!
+  prompt: String!
+}
+
+type QLUser {
+  name: String
+  image: String
+  email: String!
+  password: String!
+  emailVerified: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  role: UserRole!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+type Query {
+  findallqlusers: [QLUser!]!
+  findqluser(id: Int!): QLUser!
+  findqlpost(id: Int!): QLPost!
+  findallqlposts: [QLPost!]!
+}
+
+type Mutation {
+  createqluser(createQlUser: CreateQLUser!): QLUser!
+  udateUserQL(updateQlUser: UpdateQLUser!): QLUser!
+  deleteqluser(id: Int!): QLUser!
+  createqlpost(createQLPost: CreateQLPost!): QLPost!
+  updateqlpost(id: Int!): QLPost!
+  deleteqlpost(id: Int!): QLPost!
+}
+
+input CreateQLUser {
+  """user email"""
+  email: String!
+
+  """user password"""
+  password: String!
+}
+
+input UpdateQLUser {
+  id: Int!
+  role: UserRole = USER
+}
+
+input CreateQLPost {
+  """post title"""
+  title: String!
+
+  """prompt used to generate video"""
+  prompt: String!
+}
