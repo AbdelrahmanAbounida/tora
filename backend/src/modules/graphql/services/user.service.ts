@@ -26,12 +26,23 @@ export class UserQLService {
   }
 
   async findAll() {
-    const qlusers = await this.qluserRepository.find();
+    const qlusers = await this.qluserRepository.find({
+      relations: {
+        posts: true,
+        savedPosts: true,
+      },
+    });
     return qlusers;
   }
 
   async findOne(id: number) {
-    const user = await this.qluserRepository.findOneBy({ id });
+    const user = await this.qluserRepository.findOne({
+      where: { id },
+      relations: {
+        posts: true,
+        savedPosts: true,
+      },
+    }); // findOneBy doesn't support relations
     return user;
   }
   async findOneByEmail(email: string) {

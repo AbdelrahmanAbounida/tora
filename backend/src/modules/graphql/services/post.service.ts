@@ -32,7 +32,12 @@ export class PostQLService {
   }
 
   async findAll() {
-    const qlposts = await this.postRepository.find();
+    const qlposts = await this.postRepository.find({
+      relations: {
+        owner: true,
+        users: true,
+      },
+    });
     return qlposts;
   }
 

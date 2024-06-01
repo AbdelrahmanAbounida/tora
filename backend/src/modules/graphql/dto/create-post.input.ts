@@ -7,4 +7,7 @@ export class CreateQLPost {
 
   @Field({ description: 'prompt used to generate video' })
   prompt: string;
+
+  @Field({ nullable: true, defaultValue: true })
+  showowner?: boolean;
 }

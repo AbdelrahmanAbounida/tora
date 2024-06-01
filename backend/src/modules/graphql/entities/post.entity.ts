@@ -1,4 +1,11 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Directive,
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -8,8 +15,11 @@ import {
 } from 'typeorm';
 import { AbstractEnttiy } from 'src/database/abstract.entity';
 import { QLUser } from './user.entity';
+import { BasicItemInterface } from '../interfaces/item.interface';
 
-@ObjectType()
+@ObjectType({
+  implements: () => [BasicItemInterface],
+})
 @Entity()
 export class QLPost extends AbstractEnttiy<QLPost> {
   // @Field({nullable:false})
@@ -17,7 +27,7 @@ export class QLPost extends AbstractEnttiy<QLPost> {
   // userId
 
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => Int) // ID
   id: number;
 
   @Field()
@@ -45,4 +55,15 @@ export class QLPost extends AbstractEnttiy<QLPost> {
   @ManyToMany((type) => QLUser)
   @Field(() => [QLUser])
   users: QLUser[];
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  @Column({
+    nullable: true,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt?: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  updatedAt?: Date;
 }

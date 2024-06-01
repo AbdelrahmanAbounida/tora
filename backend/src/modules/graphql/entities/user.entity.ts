@@ -1,4 +1,11 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Directive,
+  Field,
+  GraphQLISODateTime,
+  GraphQLTimestamp,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { AbstractEnttiy } from 'src/database/abstract.entity';
 import {
   Column,
@@ -37,15 +44,15 @@ export class QLUser extends AbstractEnttiy<QLUser> {
   password: string;
 
   @Column({ type: 'timestamp', nullable: true }) // , default: () => 'CURRENT_TIMESTAMP'
-  @Field({ nullable: true })
+  @Field(() => GraphQLISODateTime, { nullable: true })
   emailVerified: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Field({ nullable: false })
+  @Field(() => GraphQLISODateTime, { nullable: false })
   createdAt: Date;
 
   @Column({ type: 'datetime', onUpdate: 'CURRENT_TIMESTAMP', nullable: true }) // , default: () => 'CURRENT_TIMESTAMP'
-  @Field({ nullable: true })
+  @Field(() => GraphQLISODateTime, { nullable: true })
   updatedAt: Date;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
