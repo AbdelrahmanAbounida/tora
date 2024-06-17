@@ -215,3 +215,15 @@ API Keys
 1- add api_key to configuration 
 2- create apikey guard 
 3- 
+
+********************************************
+GraphQL
+********************************************
+generate schema 
+>> ts-node generate-typings
+
+{
+  allusers { // this is called the root field of query 
+    name // payload of query and also any other nested fields called payload 
+  }
+}

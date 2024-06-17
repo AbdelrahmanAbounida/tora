@@ -13,7 +13,7 @@ export class UserQLResolver {
     return this.userQLService.create(createQlUser);
   }
 
-  @Query((returns) => [QLUser], { name: 'findallqlusers' })
+  @Query(() => [QLUser], { name: 'findallqlusers' })
   findAllUserQL() {
     return this.userQLService.findAll();
   }

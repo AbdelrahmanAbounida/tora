@@ -32,10 +32,11 @@ import awsConfig from './config/aws.config';
     AwsModule,
     EmailModule,
     ApiModule,
-    GraphqlModule
+    GraphqlModule,
   ],
   controllers: [],
   providers: [
+    // enable auth globally
     {
       provide: APP_GUARD,
       useClass: JWTAuthGuard,
