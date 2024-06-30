@@ -52,7 +52,7 @@ export class QLPost extends AbstractEnttiy<QLPost> {
   @Field(() => QLUser)
   owner: QLUser;
 
-  @ManyToMany((type) => QLUser)
+  @ManyToMany((type) => QLUser, (user) => user.savedPosts)
   @Field(() => [QLUser])
   users: QLUser[];
 

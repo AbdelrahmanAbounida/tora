@@ -5,7 +5,6 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { LoggerInterceptor } from './common/interceptors/log.interceptor';
 import { Reflector } from '@nestjs/core';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -23,7 +22,7 @@ async function bootstrap() {
     new LoggerInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  // app.useGlobalGuards // instead of APP_GUARD in main module
+  // app.useGlobalGuards; // instead of APP_GUARD in main module
 
   // app.useLogger(new CustomLogger());
   await app.listen(configService.getOrThrow('app.port'));

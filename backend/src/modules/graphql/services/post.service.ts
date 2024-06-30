@@ -31,6 +31,36 @@ export class PostQLService {
     return post;
   }
 
+  async findUserPosts(userId: number) {
+    const user = await this.userQLService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('no user found for this id');
+    }
+    const posts = await this.postRepository.find({
+      where: {
+        owner: {
+          id: userId,
+        },
+      },
+    });
+    return posts;
+  }
+
+  async findUserSavedPosts(userId: number) {
+    const user = await this.userQLService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('no user found for this id');
+    }
+    const posts = await this.postRepository.find({
+      where: {
+        users: {
+          id: userId,
+        },
+      },
+    });
+    return posts;
+  }
+
   async findAll() {
     const qlposts = await this.postRepository.find({
       relations: {

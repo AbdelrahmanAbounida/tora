@@ -12,6 +12,8 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import { StatusBar } from "expo-status-bar";
+import { ApolloProvider } from "@apollo/client";
+import { apollo_client } from "@/graphql/client";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,13 +50,15 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack>
-      <StatusBar backgroundColor="#161622" style="light" />
+      <ApolloProvider client={apollo_client}>
+        <Stack>
+          {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+        <StatusBar backgroundColor="#161622" style="light" />
+      </ApolloProvider>
     </ThemeProvider>
   );
 }

@@ -14,6 +14,7 @@ import { EmailModule } from './modules/email/email.module';
 import { ApiModule } from './modules/api/api.module';
 import { GraphqlModule } from './modules/graphql/graphql.module';
 import awsConfig from './config/aws.config';
+import { APIGuard } from './auth/guards/api.guard';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import awsConfig from './config/aws.config';
     // enable auth globally
     {
       provide: APP_GUARD,
-      useClass: JWTAuthGuard,
+      useClass: JWTAuthGuard, // APIGuard, // JWTAuthGuard, we can add multiple guards
     },
   ],
 })

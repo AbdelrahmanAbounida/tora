@@ -22,7 +22,7 @@ import { Auth } from 'src/auth/decorator/auth-decorator';
 
 // @UseGuards(AuthGuard('myjwt'))
 @Controller('users')
-@Public()
+// @Public()
 // @Auth(USER_ROLE_ENUM.USER, true)
 // @UsePipes(ValidationPipe)
 export class UsersController {
@@ -37,11 +37,10 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(JWTAuthGuard)
+  // @UseGuards(JWTAuthGuard)
   @Get('all')
   async findAll() {
     const users = await this.usersService.findAll();
-    this.logger.success(users[0].email);
     return users;
   }
 

@@ -5,6 +5,7 @@ import { CreateQLPost } from '../dto/create-post.input';
 import { PostQLService } from '../services/post.service';
 import { UpdateQLPost } from '../dto/update-post.input';
 
+// reolver works as a controller to provide endpoints (query names) and uses services under the hood
 @Injectable()
 export class PostQLResolver {
   constructor(private readonly postQLService: PostQLService) {}
@@ -22,9 +23,24 @@ export class PostQLResolver {
     return this.postQLService.findOne(id);
   }
 
-  @Query((returns) => [QLPost], { name: 'findallqlposts' })
+  @Query(() => [QLPost], { name: 'findallposts' })
   async findAllPostsQL() {
-    return this.postQLService.findAll();
+    const posts = await this.postQLService.findAll();
+    return posts;
+  }
+
+  @Query((returns) => [QLPost], { name: 'findAllUserPosts' })
+  async findUserPosts(
+    @Args({ name: 'userId', type: () => Int }) userId: number,
+  ) {
+    return this.postQLService.findUserPosts(userId);
+  }
+
+  @Query((returns) => [QLPost], { name: 'findAllUserSavedPosts' })
+  async findUserSavedPosts(
+    @Args({ name: 'userId', type: () => Int }) userId: number,
+  ) {
+    return this.postQLService.findUserSavedPosts(userId);
   }
 
   @Mutation(() => QLPost, { name: 'updateqlpost' })

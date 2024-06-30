@@ -64,7 +64,7 @@ export class QLUser extends AbstractEnttiy<QLUser> {
   @Field(() => [QLPost], { name: 'posts', defaultValue: [] })
   posts: QLPost[];
 
-  @ManyToMany((type) => QLPost)
+  @ManyToMany((type) => QLPost, (post) => post.users)
   @JoinTable() // no need to create external table
   @Field(() => [QLPost], { name: 'savedPosts', defaultValue: [] })
   savedPosts: QLPost[];
